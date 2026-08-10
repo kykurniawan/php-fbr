@@ -11,10 +11,14 @@ class ExceptionHandler
 
         switch (get_class($th)) {
             case AuthenticationException::class:
-                session()->flash('error', 'Please login to access the page:' . $request->url());
+                session()->flash('error', 'Please login to access the page: ' . $request->url());
                 return redirect(url('login'));
+            case PageNotFoundException::class:
+                return $this->renderPage(404, 'Page not found', $th->getMessage());
+            case MethodNotAllowedException::class:
+                return $this->renderPage(405, 'Method not allowed', $th->getMessage());
             default:
-                throw $th;
+                return $this->renderPage(500, 'Internal server error', $th->getMessage());
         }
     }
 
@@ -29,6 +33,13 @@ class ExceptionHandler
                     'data' => [],
                 ]);
                 break;
+            case PageNotFoundException::class:
+                http_response_code(404);
+                echo json_encode([
+                    'message' => $th->getMessage(),
+                    'data' => [],
+                ]);
+                break;
             case MethodNotAllowedException::class:
                 http_response_code(405);
                 echo json_encode([
@@ -37,7 +48,28 @@ class ExceptionHandler
                 ]);
                 break;
             default:
-                throw $th;
+                http_response_code(500);
+                echo json_encode([
+                    'message' => 'Internal server error',
+                    'data' => [],
+                ]);
         }
+    }
+
+    private function renderPage(int $statusCode, string $title, string $message): void
+    {
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+
+        http_response_code($statusCode);
+        page_start('main');
+        echo '<div class="container py-5 text-center">'
+            . '<h1 class="display-1">' . $statusCode . '</h1>'
+            . '<p class="lead">' . htmlspecialchars($title, ENT_QUOTES) . '</p>'
+            . '<p class="text-muted">' . htmlspecialchars($message, ENT_QUOTES) . '</p>'
+            . '<a href="' . url() . '" class="btn btn-primary">Back to home</a>'
+            . '</div>';
+        page_end();
     }
 }

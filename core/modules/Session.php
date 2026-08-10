@@ -22,8 +22,9 @@ class Session implements SessionInterface
     {
         $data = $_SESSION[$key] ?? $default;
 
-        if ($this->has('__flash') && in_array($key, $_SESSION['__flash'])) {
+        if ($this->has('__flash') && in_array($key, $_SESSION['__flash'], true)) {
             $this->remove($key);
+            $_SESSION['__flash'] = array_values(array_diff($_SESSION['__flash'], [$key]));
         }
 
         return $data;
@@ -56,7 +57,14 @@ class Session implements SessionInterface
             $this->set('__flash', []);
         }
 
-        $this->push('__flash', $key);
+        if (!in_array($key, $_SESSION['__flash'], true)) {
+            $_SESSION['__flash'][] = $key;
+        }
+    }
+
+    public function flush(): void
+    {
+        $_SESSION = [];
     }
 
     public function push(string $key, $value): void

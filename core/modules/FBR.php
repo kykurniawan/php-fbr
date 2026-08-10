@@ -78,7 +78,7 @@ class FBR
         }
 
         $this->routes = $this->collectRoutes($this->pageFilesDir);
-        $this->currentPath = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
+        $this->currentPath = $this->resolveCurrentPath();
     }
 
     public function bindObject(string $name, object $object)
@@ -138,6 +138,17 @@ class FBR
         } catch (Throwable $th) {
             $this->handleException($th);
         }
+    }
+
+    private function resolveCurrentPath(): string
+    {
+        if (isset($_SERVER['PATH_INFO']) && $_SERVER['PATH_INFO'] !== '') {
+            return $_SERVER['PATH_INFO'];
+        }
+
+        $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+
+        return $path !== '' ? $path : '/';
     }
 
     private function collectRoutes(string $dir, string $prefix = '/')
@@ -208,6 +219,10 @@ class FBR
         );
 
         foreach ($this->middlewares as $middleware) {
+            if (in_array($route, $middleware->getExceptRoutes(), true)) {
+                continue;
+            }
+
             $routes = $middleware->getRoutes();
 
             foreach ($routes as $middlewareRoute) {
@@ -228,7 +243,6 @@ class FBR
     {
         if ($this->exceptionHandler === null) {
             throw $th;
-            exit;
         }
 
         $this->exceptionHandler->handle($this->request, $th);
@@ -269,7 +283,7 @@ class FBR
 
     public function dispatch(string $event, ...$params)
     {
-        if ($this->eventHandlers[$event] !== null) {
+        if (isset($this->eventHandlers[$event])) {
             ($this->eventHandlers[$event])(...$params);
         }
     }
@@ -297,6 +311,7 @@ class FBR
     public function pageStart(string $layout)
     {
         $this->useLayout = $layout;
+        ob_start();
     }
 
     public function pageEnd()

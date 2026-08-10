@@ -10,7 +10,7 @@ $fbr = new FBR();
 
 $fbr->setPageFilesDir(__DIR__ . '/pages');
 
-$fbr->setBaseUrl('http://127.0.0.1/php-fbr/public/');
+$fbr->setBaseUrl(getenv('APP_URL') ?: 'http://127.0.0.1/php-fbr/public/');
 
 $fbr->bindObject('user', new User());
 
@@ -19,8 +19,10 @@ $fbr->middlewares(
         '/api/login',
         '/api/users',
     ),
-    Authenticate::make()->forRoutes(
-        '/api/users',
+    Authenticate::make()->forRoutes('*')->except(
+        '/login',
+        '/logout',
+        '/api/login',
     ),
 );
 

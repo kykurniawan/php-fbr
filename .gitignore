@@ -1,0 +1,6 @@
+# Runtime database files (SQLite)
+database/*.sqlite
+database/*.sqlite-*
+
+# Logs
+*.log
