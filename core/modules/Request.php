@@ -35,8 +35,9 @@ class Request
     public function post(?string $key = null, $default = null)
     {
         $contentType = $this->header('content-type');
+        $mediaType = strtolower(trim(explode(';', (string) $contentType)[0]));
 
-        if ($contentType === 'application/json') {
+        if ($mediaType === 'application/json') {
             $post = json_decode(file_get_contents('php://input'), true);
             if (is_array($post)) {
                 $this->post = $post;
@@ -81,16 +82,12 @@ class Request
 
     public function url()
     {
-        $scheme = $this->server['REQUEST_SCHEME'];
-        $host = $this->server['HTTP_HOST'];
-        if (isset($this->server['PORT'])) {
-            $host .= ':' . $this->server['PORT'];
-        }
-        $uri = $this->server['REQUEST_URI'];
+        $https = ($this->server['HTTPS'] ?? '') !== '' && strtolower($this->server['HTTPS']) !== 'off';
+        $scheme = $this->server['REQUEST_SCHEME'] ?? ($https ? 'https' : 'http');
+        $host = $this->server['HTTP_HOST'] ?? ($this->server['SERVER_NAME'] ?? 'localhost');
+        $uri = $this->server['REQUEST_URI'] ?? '/';
 
-        $url = $scheme . '://' . $host . $uri;
-
-        return $url;
+        return $scheme . '://' . $host . $uri;
     }
 
     public function parameter(string $key, $default = null)

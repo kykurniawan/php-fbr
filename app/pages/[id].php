@@ -12,7 +12,9 @@ $user = fbr()->object('user')->find($id);
 <div class="container">
     <div class="mb-3">
         <a href="<?= url() ?>" class="btn btn-sm btn-primary">Back</a>
-        <form action="<?= url($user['id'] . '/delete') ?>" method="post" class="d-inline">
+        <a href="<?= url('edit/' . $user['id']) ?>" class="btn btn-sm btn-secondary">Edit</a>
+        <form action="<?= url($user['id'] . '/delete') ?>" method="post" class="d-inline"
+            onsubmit="return confirm('Delete this user?')">
             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
         </form>
     </div>

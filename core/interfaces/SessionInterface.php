@@ -12,4 +12,5 @@ interface SessionInterface
     public function pull(string $key, $default = null);
     public function flash(string $key, $value): void;
     public function push(string $key, $value): void;
+    public function flush(): void;
 }

@@ -7,22 +7,49 @@ if (request()->method() === 'post') {
     $username = request()->post('username');
     $password = request()->post('password');
 
-    if ($username === 'admin' && $password === 'admin') {
+    $adminUsername = getenv('ADMIN_USERNAME') ?: 'admin';
+    $adminPassword = getenv('ADMIN_PASSWORD') ?: 'admin';
+
+    if ($username === $adminUsername && $password === $adminPassword) {
         session()->set('uid', 1);
         return redirect(url());
     }
 
-    session()->set('error', 'Invalid username or password');
+    session()->flash('error', 'Invalid username or password');
     return redirect(url('login'));
 }
-
-if (session()->has('error')) {
-    echo session()->get('error');
-}
 ?>
-
-<form action="<?= url('login') ?>" method="post">
-    <input type="text" name="username" placeholder="Username">
-    <input type="password" name="password" placeholder="Password">
-    <button type="submit">Login</button>
-</form>
+<?php page_start('main') ?>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h1 class="h4 mb-4 text-center">Login</h1>
+                    <?php if (session()->has('error')) : ?>
+                        <div class="alert alert-danger">
+                            <?= session()->get('error') ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (session()->has('message')) : ?>
+                        <div class="alert alert-info">
+                            <?= session()->get('message') ?>
+                        </div>
+                    <?php endif; ?>
+                    <form action="<?= url('login') ?>" method="post">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" id="username" name="username" placeholder="Username" class="form-control" required autofocus>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" name="password" placeholder="Password" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php page_end() ?>
