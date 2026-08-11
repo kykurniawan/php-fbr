@@ -1,20 +1,15 @@
 # PHP-FBR documentation site — built by GitHub Pages (Jekyll) from /docs
-remote_theme: just-the-docs
+# Self-contained template: custom layout + assets in this folder, no external
+# theme dependency, so it builds identically on any Jekyll version.
+theme: null
 
 title: PHP-FBR
 description: Just for fun — file based routing with PHP
 lang: en
 
-# just-the-docs settings
-search_enabled: true
-heading_anchors: true
-back_to_top: true
-back_to_top_text: "Back to top"
-
-# Footer
-footer_content: "PHP-FBR &copy; Rizky Kurniawan — <a href=\"https://github.com/kykurniawan/php-fbr\">Source on GitHub</a>"
-
-# Header link
-aux_links:
-  "php-fbr on GitHub":
-    - "https://github.com/kykurniawan/php-fbr"
+# Sidebar navigation is generated from each page's front matter:
+#   layout: default
+#   title: Page Title      -> shown in the sidebar
+#   nav_order: N           -> sidebar position (lower first)
+#   nav_exclude: true      -> optional, hides the page from the sidebar
+footer_content: "PHP-FBR &copy; Rizky Kurniawan — [Source on GitHub](https://github.com/kykurniawan/php-fbr)"
