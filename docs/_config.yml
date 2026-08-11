@@ -1,0 +1,20 @@
+# PHP-FBR documentation site — built by GitHub Pages (Jekyll) from /docs
+remote_theme: just-the-docs
+
+title: PHP-FBR
+description: Just for fun — file based routing with PHP
+lang: en
+
+# just-the-docs settings
+search_enabled: true
+heading_anchors: true
+back_to_top: true
+back_to_top_text: "Back to top"
+
+# Footer
+footer_content: "PHP-FBR &copy; Rizky Kurniawan — <a href=\"https://github.com/kykurniawan/php-fbr\">Source on GitHub</a>"
+
+# Header link
+aux_links:
+  "php-fbr on GitHub":
+    - "https://github.com/kykurniawan/php-fbr"

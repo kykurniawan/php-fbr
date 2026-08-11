@@ -1,3 +1,9 @@
+---
+layout: default
+title: Routing
+nav_order: 3
+---
+
 # Routing
 
 FBR routes are plain PHP files in `app/pages/`. The file path is the route —

@@ -1,3 +1,9 @@
+---
+layout: default
+title: Session
+nav_order: 6
+---
+
 # Session
 
 `session()` wraps PHP native sessions with a small, ergonomic API. The

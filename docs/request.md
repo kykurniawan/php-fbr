@@ -1,3 +1,9 @@
+---
+layout: default
+title: Request
+nav_order: 4
+---
+
 # Request
 
 `request()` returns the current `Request` object, which wraps PHP

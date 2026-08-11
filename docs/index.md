@@ -1,3 +1,9 @@
+---
+layout: default
+title: Home
+nav_order: 1
+---
+
 # PHP-FBR Documentation
 
 PHP-FBR is a tiny, file-based PHP micro-framework. Every file in `app/pages/`
