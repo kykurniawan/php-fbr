@@ -80,3 +80,23 @@ if (!function_exists('page_end')) {
         fbr()->pageEnd();
     }
 }
+
+if (!function_exists('retrieve')) {
+    /**
+     * Retrieve a bound object from the container.
+     *
+     * @param string $name
+     * @return object
+     */
+    function retrieve(string $name): object
+    {
+        return fbr()->getObject($name);
+    }
+}
+
+if (!function_exists('response')) {
+    function response(string $contentType = 'text/html', int $statusCode = 200, array $headers = []): Response
+    {
+        return new Response($contentType, $statusCode, $headers);
+    }
+}

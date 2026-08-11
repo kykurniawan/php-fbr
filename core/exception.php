@@ -56,3 +56,31 @@ class AuthenticationException extends Exception
         parent::__construct($message, $code, $previous);
     }
 }
+
+class ExceptionHandler
+{
+    public function handle(Request $request, Throwable $th)
+    {
+        $code = $th->getCode() ?? 500;
+        http_response_code($code);
+
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+
+        if ($code >= 500) {
+            echo sprintf('Code: %s\n', $th->getCode());
+            echo sprintf('Message: %s\n', $th->getMessage());
+            echo sprintf('File: %s\n', $th->getFile());
+            echo sprintf('Line: %s\n', $th->getLine());
+            echo sprintf('Trace: %s\n', print_r($th->getTrace(), true));
+            exit;
+        }
+
+        if ($code >= 300) {
+            echo sprintf('Code: %s\n', $th->getCode());
+            echo sprintf('Message: %s\n', $th->getMessage());
+            exit;
+        }
+    }
+}

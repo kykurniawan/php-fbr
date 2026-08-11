@@ -1,6 +1,13 @@
 <?php
 defined('RUN') or http_response_code(404) and die();
 
+require_once __DIR__ . '/exception.php';
+require_once __DIR__ . '/request.php';
+require_once __DIR__ . '/response.php';
+require_once __DIR__ . '/session.php';
+require_once __DIR__ . '/middleware.php';
+require_once __DIR__ . '/common.php';
+
 class FBR
 {
     private static self $instance;
@@ -46,6 +53,11 @@ class FBR
         $this->pageFilesDir = $pageFilesDir;
     }
 
+    public function setLayoutFilesDir(string $layoutFilesDir)
+    {
+        $this->layoutFilesDir = $layoutFilesDir;
+    }
+
     public function request(): ?Request
     {
         return $this->request;
@@ -74,7 +86,9 @@ class FBR
             );
         }
         if ($this->layoutFilesDir === null) {
-            $this->layoutFilesDir = $this->pageFilesDir . '/../layouts/';
+            throw new ConfigurationException(
+                sprintf('Layout files dir not set')
+            );
         }
 
         $this->routes = $this->collectRoutes($this->pageFilesDir);
@@ -96,7 +110,7 @@ class FBR
         return static::$instance->currentPath;
     }
 
-    public function getObject(string $name)
+    public function getObject(string $name): object
     {
         if (!isset($this->objects[$name])) {
             throw new ObjectNotFoundException(
@@ -122,9 +136,9 @@ class FBR
             $this->init();
 
             foreach ($this->routes as $route) {
-                $filePath = $this->pageFilesDir . $route . '.php';
+                $filePath = $this->sanitizeFilePath($this->pageFilesDir . $route . '.php');
                 if (!file_exists($filePath)) {
-                    $filePath = $this->pageFilesDir . $route . '/index.php';
+                    $filePath = $this->sanitizeFilePath($this->pageFilesDir . $route . '/index.php');
                     if (!file_exists($filePath)) {
                         throw new PageFileDoesNotExistException(
                             sprintf('Page file does not exist: %s', $filePath)
@@ -138,6 +152,14 @@ class FBR
         } catch (Throwable $th) {
             $this->handleException($th);
         }
+    }
+
+    private function sanitizeFilePath(string $filePath): string
+    {
+        $filePath = str_replace('../', '', $filePath);
+        $filePath = str_replace('//', '/', $filePath);
+
+        return $filePath;
     }
 
     private function resolveCurrentPath(): string
