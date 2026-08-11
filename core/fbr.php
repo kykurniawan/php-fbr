@@ -340,7 +340,7 @@ class FBR
     {
         define('PAGE_CONTENT', ob_get_clean());
 
-        include_once $this->layoutFilesDir . $this->useLayout . '.php';
+        include_once $this->layoutFilesDir . '/' . $this->useLayout . '.php';
     }
 
     public static function instance()
