@@ -157,7 +157,7 @@ class FBR
     private function sanitizeFilePath(string $filePath): string
     {
         $filePath = str_replace('../', '', $filePath);
-        $filePath = str_replace('//', '/', $filePath);
+        $filePath = preg_replace('#/{2,}#', '/', $filePath);
 
         return $filePath;
     }
@@ -340,7 +340,7 @@ class FBR
     {
         define('PAGE_CONTENT', ob_get_clean());
 
-        include_once $this->layoutFilesDir . '/' . $this->useLayout . '.php';
+        include_once $this->sanitizeFilePath($this->layoutFilesDir . '/' . $this->useLayout . '.php');
     }
 
     public static function instance()
