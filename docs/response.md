@@ -1,3 +1,9 @@
+---
+layout: default
+title: Response
+nav_order: 5
+---
+
 # Response
 
 `response()` builds an HTTP response and sends it. Unlike the page/layout

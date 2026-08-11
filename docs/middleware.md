@@ -1,3 +1,9 @@
+---
+layout: default
+title: Middleware
+nav_order: 7
+---
+
 # Middleware
 
 Middleware runs before a page is included. It can inspect or modify the

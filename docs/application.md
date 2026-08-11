@@ -1,3 +1,9 @@
+---
+layout: default
+title: Application
+nav_order: 8
+---
+
 # Application
 
 The application is bootstrapped in `app/app.php`, which returns a
