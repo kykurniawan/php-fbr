@@ -17,6 +17,7 @@ class FBR
     private array $routes = [];
     private string $currentPath;
     private array $objects = [];
+    private array $functions = [];
     private ?string $baseUrl = null;
     private ?ExceptionHandler $exceptionHandler = null;
     private ?Request $request = null;
@@ -100,6 +101,11 @@ class FBR
         $this->objects[$name] = $object;
     }
 
+    public function bindFunction(string $name, Closure $function)
+    {
+        $this->functions[$name] = $function;
+    }
+
     public function on(string $event, Closure $handler)
     {
         $this->eventHandlers[$event] = $handler;
@@ -118,6 +124,16 @@ class FBR
             );
         }
         return $this->objects[$name];
+    }
+
+    public function execFunction(string $name): mixed
+    {
+        if (!isset($this->functions[$name])) {
+            throw new FunctionNotFoundException(
+                sprintf('Function not found: %s', $name)
+            );
+        }
+        return $this->functions[$name]($this);
     }
 
     public function run()

@@ -20,7 +20,7 @@ clone it, point your document root at `public/`, and it runs.
 | [Response](response.md) | Sending HTML, JSON, or raw content with custom status codes |
 | [Session](session.md) | Session storage, flash messages, and helpers |
 | [Middleware](middleware.md) | Global request middleware with per-route targeting |
-| [Application](application.md) | Bootstrapping, object container, events, layouts, and error handling |
+| [Application](application.md) | Bootstrapping, object container, function binding, events, layouts, and error handling |
 
 ## Quick start
 

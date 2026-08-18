@@ -4,6 +4,8 @@ A tiny file-based PHP micro-framework. Pages are plain PHP files in
 `app/pages/` — the file path is the route. No Composer, no npm, no build
 step: clone it, point your document root at `public/`, and it runs.
 
+**Full documentation: https://kykurniawan.github.io/php-fbr**
+
 ## Features
 
 - File-based routing — every page file is a URL, including dynamic
@@ -64,10 +66,12 @@ app/
   app.php          Application bootstrap
   pages/           File-based routes
   layouts/         Layout templates (main.php)
-docs/              Documentation (start at docs/README.md)
+docs/              Documentation source (published at the link below)
 ```
 
 ## Documentation
 
-Full docs live in [`docs/`](docs/README.md): getting started, routing,
-request, response, session, middleware, and application reference.
+Full docs, including getting started, routing, request, response,
+session, middleware, and application reference, are published at:
+
+**https://kykurniawan.github.io/php-fbr**

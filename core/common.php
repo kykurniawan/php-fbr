@@ -94,6 +94,19 @@ if (!function_exists('retrieve')) {
     }
 }
 
+if (!function_exists('xfn')) {
+    /**
+     * Execute a function from the container.
+     *
+     * @param string $name
+     * @return mixed
+     */
+    function xfn(string $name): mixed
+    {
+        return fbr()->execFunction($name);
+    }
+}
+
 if (!function_exists('response')) {
     function response(string $contentType = 'text/html', int $statusCode = 200, array $headers = []): Response
     {

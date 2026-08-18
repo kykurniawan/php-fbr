@@ -25,6 +25,14 @@ class ObjectNotFoundException extends Exception
     }
 }
 
+class FunctionNotFoundException extends Exception
+{
+    public function __construct($message = 'Function not found', $code = 500, ?Throwable $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
+}
+
 class InvalidPageReturnType extends Exception
 {
     public function __construct($message = 'Invalid page return type', $code = 500, ?Throwable $previous = null)

@@ -30,6 +30,8 @@ return $fbr;
 | `setExceptionHandler($handler)` | Custom error handler (see below)         |
 | `setSessionHandler($handler)`   | Swap session backend (`SessionInterface`)|
 | `middlewares(...$m)`            | Register global middleware               |
+| `bindObject($name, $obj)`       | Register a reusable object (see below)   |
+| `bindFunction($name, $closure)` | Register a reusable closure (see below)  |
 
 ## Object container
 
@@ -45,6 +47,25 @@ $db = fbr()->object("db");
 ```
 
 `retrieve()` throws `ObjectNotFoundException` for unknown names.
+
+## Function binding
+
+Bind a closure at bootstrap and invoke it by name anywhere. The bound
+closure receives the `FBR` instance as its first argument, so it can pull
+other bound objects/functions out of the container:
+
+```php
+$fbr->bindFunction("greet", function (FBR $fbr) {
+    return "Hello, " . $fbr->getObject("hello")->world();
+});
+
+// in a page
+xfn("greet");
+// or
+fbr()->execFunction("greet");
+```
+
+`execFunction()` throws `FunctionNotFoundException` for unknown names.
 
 ## URL generation
 
@@ -108,6 +129,7 @@ Built-in exception classes:
 | `AuthenticationException`        | 401  | Unauthenticated (convenience)   |
 | `PageFileDoesNotExistException`  | 500  | Route file missing on disk      |
 | `ObjectNotFoundException`        | 500  | `retrieve()` unknown object     |
+| `FunctionNotFoundException`      | 500  | `xfn()` unknown function        |
 | `InvalidPageReturnType`          | 500  | Page returned an invalid type   |
 | `ConfigurationException`         | 500  | Missing required configuration  |
 
@@ -131,3 +153,4 @@ HTML or JSON error pages.
 | `page_start($layout)`     | `fbr()->pageStart($layout)`    |
 | `page_end()`              | `fbr()->pageEnd()`             |
 | `retrieve($name)`         | `fbr()->getObject($name)`      |
+| `xfn($name)`              | `fbr()->execFunction($name)`   |

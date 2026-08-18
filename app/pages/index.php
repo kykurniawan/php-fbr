@@ -8,5 +8,11 @@ $hello = retrieve('hello');
 ?>
 
 <?php page_start('main') ?>
-<?= $hello->world() ?>
+
+<div>
+    <?= $hello->world() ?>
+</div>
+<div>
+    <?= xfn('greet') ?>
+</div>
 <?php page_end() ?>
