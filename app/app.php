@@ -19,8 +19,8 @@ $fbr->bindObject('hello', new class {
     }
 });
 
-$fbr->bindFunction('greet', function (FBR $fbr) {
-    return 'Greeting: ' . $fbr->getObject('hello')->world();
+$fbr->bindFunction('greet', function (FBR $fbr, $panda, $kucing) {
+    return 'Greeting: ' . $fbr->getObject('hello')->world() . $panda . $kucing;
 });
 
 return $fbr;

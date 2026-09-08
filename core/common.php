@@ -99,11 +99,12 @@ if (!function_exists('xfn')) {
      * Execute a function from the container.
      *
      * @param string $name
+     * @param mixed ...$args
      * @return mixed
      */
-    function xfn(string $name): mixed
+    function xfn(string $name, mixed ...$args): mixed
     {
-        return fbr()->execFunction($name);
+        return fbr()->execFunction($name, ...$args);
     }
 }
 

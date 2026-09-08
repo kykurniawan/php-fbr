@@ -13,6 +13,6 @@ $hello = retrieve('hello');
     <?= $hello->world() ?>
 </div>
 <div>
-    <?= xfn('greet') ?>
+    <?= xfn('greet', 'Pandaku', 'Kucingku') ?>
 </div>
 <?php page_end() ?>

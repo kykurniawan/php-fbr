@@ -126,14 +126,14 @@ class FBR
         return $this->objects[$name];
     }
 
-    public function execFunction(string $name): mixed
+    public function execFunction(string $name, mixed ...$params): mixed
     {
         if (!isset($this->functions[$name])) {
             throw new FunctionNotFoundException(
                 sprintf('Function not found: %s', $name)
             );
         }
-        return $this->functions[$name]($this);
+        return $this->functions[$name]($this, ...$params);
     }
 
     public function run()
